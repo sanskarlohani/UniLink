@@ -17,11 +17,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sanskar.unilink.models.User
 import com.sanskar.unilink.screens.BottomNavBar
+import com.sanskar.unilink.viewmodel.ViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,18 +32,18 @@ fun ProfileScreen(navController: NavController) {
     val userId = FirebaseAuth.getInstance().currentUser?.uid
     var user by remember { mutableStateOf<User?>(null) }
 
-    LaunchedEffect(Unit) {
-        userId?.let {
-            FirebaseFirestore.getInstance().collection("users").document(it)
-                .get()
-                .addOnSuccessListener { doc ->
-                    user = doc.toObject(User::class.java)
-                }
-                .addOnFailureListener {
-                    Toast.makeText(context, "Failed to load profile", Toast.LENGTH_SHORT).show()
-                }
-        }
-    }
+//    LaunchedEffect(Unit) {
+//        userId?.let {
+//            FirebaseFirestore.getInstance().collection("users").document(it)
+//                .get()
+//                .addOnSuccessListener { doc ->
+//                    user = doc.toObject(User::class.java)
+//                }
+//                .addOnFailureListener {
+//                    Toast.makeText(context, "Failed to load profile", Toast.LENGTH_SHORT).show()
+//                }
+//        }
+//    }
 
     Scaffold(
         topBar = { TopAppBar(title = { Text("Profile") }) },

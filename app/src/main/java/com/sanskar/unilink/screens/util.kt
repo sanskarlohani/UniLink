@@ -1,13 +1,15 @@
 package com.sanskar.unilink.screens
 
+import android.R.attr.label
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Card
@@ -22,6 +24,7 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -52,12 +55,12 @@ fun BottomNavBar(navController: NavController) {
             selected = false,
             onClick = { navController.navigate(Routes.HOME) }
         )
-        NavigationBarItem(
-            icon = { Icon(Icons.Default.AddCircle, contentDescription = "Report") },
-            label = { Text("Report") },
-            selected = false,
-            onClick = { navController.navigate(Routes.REPORT) }
-        )
+//        NavigationBarItem(
+//            icon = { Icon(Icons.Default.AddCircle, contentDescription = "Report") },
+//            label = { Text("Report") },
+//            selected = false,
+//            onClick = { navController.navigate(Routes.REPORT) }
+//        )
         NavigationBarItem(
             icon = { Icon(Icons.Default.Person, contentDescription = "Profile") },
             label = { Text("Profile") },
@@ -67,20 +70,25 @@ fun BottomNavBar(navController: NavController) {
     }
 }
 
+
 @Composable
 fun CustomOutlinedTextField(
     text: String,
     label: String,
-    onValueChange: (name: String) -> Unit
+    onValueChange: (String) -> Unit
 ) {
     OutlinedTextField(
         value = text,
-        onValueChange = { newText ->
-            onValueChange(newText)
-        },
-        label = { Text("Enter $label") }
+        onValueChange = onValueChange,
+        label = { Text("Enter $label") },
+        modifier = Modifier
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(12.dp),
+        singleLine = true,
+        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text)
     )
 }
+
 
 @Composable
 fun ItemCard(item: LostFoundItem, onClick: () -> Unit) {

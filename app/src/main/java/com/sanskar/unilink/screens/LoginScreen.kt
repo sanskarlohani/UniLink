@@ -2,12 +2,15 @@ package com.sanskar.unilink.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.sanskar.unilink.Resource
 import com.sanskar.unilink.Routes
@@ -28,7 +31,14 @@ fun LoginScreen(navController: NavController, viewModel: ViewModel ) {
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Login") })
+            TopAppBar(title = {
+                Text(
+                    text = "Welcome Back",
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp),
+                    fontSize = 20.sp,
+                    )
+            })
         }
     ) { padding ->
         Column(
@@ -42,7 +52,9 @@ fun LoginScreen(navController: NavController, viewModel: ViewModel ) {
                 value = email,
                 onValueChange = { email = it },
                 label = { Text("Email") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -51,7 +63,9 @@ fun LoginScreen(navController: NavController, viewModel: ViewModel ) {
                 value = password,
                 onValueChange = { password = it },
                 label = { Text("Password") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -61,12 +75,20 @@ fun LoginScreen(navController: NavController, viewModel: ViewModel ) {
                     if(!isLoading){
                         viewModel.login(email,password)
                     } },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                shape = RoundedCornerShape(50.dp),
             ) {
                 if (isLoading) {
                     CircularProgressIndicator()
                 } else{
-                    Text("Login")
+                    Text(
+                        text = "Login",
+                        modifier = Modifier,
+                        fontSize = 16.sp
+
+                    )
                 }
 
             }
@@ -77,7 +99,7 @@ fun LoginScreen(navController: NavController, viewModel: ViewModel ) {
                 onClick = {navController.navigate(Routes.SIGNUP) },
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {
-                Text( "Don't have an account? Register" )
+                Text( "Don't have an account? Create One" )
             }
         }
 

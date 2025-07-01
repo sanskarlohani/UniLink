@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.sanskar.unilink.viewmodel.ViewModel
 
@@ -23,7 +24,7 @@ import com.sanskar.unilink.viewmodel.ViewModel
 @Composable
 fun HomeScreen(
     navController: NavController,
-    viewModel: ViewModel
+    viewModel: ViewModel = viewModel()
 ) {
     var selectedTab by remember { mutableIntStateOf(0) }
 

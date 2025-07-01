@@ -3,10 +3,14 @@ package com.sanskar.unilink.screens
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -23,16 +27,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.sanskar.unilink.Resource
 import com.sanskar.unilink.Routes
 import com.sanskar.unilink.models.User
-import com.sanskar.unilink.screens.CustomOutlinedTextField
 import com.sanskar.unilink.viewmodel.ViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun signUpScreen(navigator: NavController, authViewModel: ViewModel){
+fun SignUpScreen(navigator: NavController, authViewModel: ViewModel){
 
     val context = LocalContext.current
     var signupState = authViewModel.signUpState.collectAsState()
@@ -50,7 +54,14 @@ fun signUpScreen(navigator: NavController, authViewModel: ViewModel){
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Register") }
+                title = {
+                    Text(
+                        text = "Create Your Account",
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp),
+                        fontSize = 20.sp,
+                    )
+                }
             )
         }
     ) { innerPadding ->
@@ -71,6 +82,8 @@ fun signUpScreen(navigator: NavController, authViewModel: ViewModel){
             CustomOutlinedTextField(text = college, "college",onValueChange = { college = it })
             CustomOutlinedTextField(text = password, "password",onValueChange = { password = it })
 
+            Spacer(modifier = Modifier.height(16.dp))
+
             Button(onClick = {
                 if (!isLoading){
                     authViewModel.signUp(
@@ -84,13 +97,24 @@ fun signUpScreen(navigator: NavController, authViewModel: ViewModel){
                         ),
                         password
                     )
-                }
+                } },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                shape = RoundedCornerShape(50.dp),
 
-            }) {
+            ) {
                 if (isLoading) {
                     Text("Loading...")
                 } else
-                    Text("Sign Up")
+                    Text(
+                        text = "Sign Up",
+                        style = androidx.compose.ui.text.TextStyle(
+                            fontSize = 18.dp.value.sp,
+                        ),
+                        modifier = Modifier,
+                        fontSize = 16.sp
+                    )
 
             }
         }
@@ -108,7 +132,8 @@ fun signUpScreen(navigator: NavController, authViewModel: ViewModel){
     }
         is Resource.Loading -> {
             Column (
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
             ){
