@@ -22,10 +22,8 @@ import com.sanskar.unilink.viewmodel.ViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(
-    navController: NavController,
-    viewModel: ViewModel = viewModel()
-) {
+fun HomeScreen(navController: NavController, viewModel1: ViewModel) {
+    var viewModel: ViewModel = viewModel()
     var selectedTab by remember { mutableIntStateOf(0) }
 
     Scaffold(

@@ -31,8 +31,10 @@ fun AppNav() {
                 viewModel = TODO()
             ) }
         }
-
         composable(Routes.LOST){
+            LoginScreen(navController, viewModel)
+        }
+        composable(Routes.FOUND){
             LoginScreen(navController, viewModel)
         }
     }
