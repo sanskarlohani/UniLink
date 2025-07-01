@@ -20,6 +20,9 @@ class ViewModel : ViewModel() {
     private val _signUpState = MutableStateFlow<Resource<Unit>>(Resource.Idle)
     val signUpState: StateFlow<Resource<Unit>> = _signUpState
 
+    private val _signOutState = MutableStateFlow<Resource<Unit>>(Resource.Idle)
+    val signOutState: StateFlow<Resource<Unit>> = _signOutState
+
     private val _lostItemState = MutableStateFlow<Resource<Unit>>(Resource.Idle)
     val lostItemState: StateFlow<Resource<Unit>> = _lostItemState
 
@@ -31,6 +34,9 @@ class ViewModel : ViewModel() {
 
     private val _foundListState = MutableStateFlow<Resource<List<LostFoundItem>>>(Resource.Loading)
     val foundListState: StateFlow<Resource<List<LostFoundItem>>> = _foundListState
+
+    private val _userProfileState = MutableStateFlow<Resource<User>>(Resource.Idle)
+    val userProfileState: StateFlow<Resource<User>> = _userProfileState
 
     fun login(email: String, password: String) {
         viewModelScope.launch {
@@ -48,13 +54,25 @@ class ViewModel : ViewModel() {
 
     fun signOut() {
         viewModelScope.launch {
-            repository.signOut()
+            _signOutState.value = Resource.Loading
+            _signOutState.value = repository.signOut()
+            _loginState.value = Resource.Idle
+            _signUpState.value = Resource.Idle
+
         }
     }
 
     fun editUserProfile(user: User) {
         viewModelScope.launch {
             repository.editUserProfile(user)
+
+        }
+    }
+
+    fun getUserProfile() {
+        viewModelScope.launch {
+            _userProfileState.value = Resource.Loading
+            _userProfileState.value = repository.getUserProfile()
         }
     }
 

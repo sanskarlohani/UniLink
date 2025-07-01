@@ -1,6 +1,7 @@
 package com.sanskar.unilink.repository
 
 import android.util.Log
+import android.util.Log.e
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
@@ -50,6 +51,22 @@ class Repository {
         return try {
             userCol.document(user.email).set(user).await()
             Resource.Success(Unit)
+        } catch (e: Exception) {
+            Resource.Error(e)
+        }
+    }
+
+    suspend fun getUserProfile(): Resource<User> {
+        return try {
+            val email = auth.currentUser?.email ?: return Resource.Error(Exception("User not logged in"))
+            val snapshot = userCol.document(email).get().await()
+            val user = snapshot.toObject(User::class.java)
+
+            if (user != null) {
+                Resource.Success(user)
+            } else {
+                Resource.Error(Exception("User not found"))
+            }
         } catch (e: Exception) {
             Resource.Error(e)
         }

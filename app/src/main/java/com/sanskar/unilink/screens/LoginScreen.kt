@@ -117,7 +117,7 @@ fun LoginScreen(navController: NavController, viewModel: ViewModel ) {
                 Column (
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ){
                     CircularProgressIndicator()
                 }
