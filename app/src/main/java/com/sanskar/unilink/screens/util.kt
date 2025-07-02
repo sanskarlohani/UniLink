@@ -1,8 +1,8 @@
 package com.sanskar.unilink.screens
 
-import android.R.attr.label
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -23,6 +23,7 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
@@ -55,12 +56,6 @@ fun BottomNavBar(navController: NavController) {
             selected = false,
             onClick = { navController.navigate(Routes.HOME) }
         )
-//        NavigationBarItem(
-//            icon = { Icon(Icons.Default.AddCircle, contentDescription = "Report") },
-//            label = { Text("Report") },
-//            selected = false,
-//            onClick = { navController.navigate(Routes.REPORT) }
-//        )
         NavigationBarItem(
             icon = { Icon(Icons.Default.Person, contentDescription = "Profile") },
             label = { Text("Profile") },
@@ -91,19 +86,42 @@ fun CustomOutlinedTextField(
 
 
 @Composable
-fun ItemCard(item: LostFoundItem, onClick: () -> Unit) {
+fun ItemCard(item: LostFoundItem, onClick: () -> Unit, userEmail: String) {
     Card(
-        modifier = Modifier.Companion
+        modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
             .clickable { onClick() },
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-        Column(modifier = Modifier.Companion.padding(16.dp)) {
-            Text(item.title, style = MaterialTheme.typography.titleMedium)
-            Text(item.description, maxLines = 2, overflow = TextOverflow.Companion.Ellipsis)
-            Spacer(modifier = Modifier.Companion.height(4.dp))
-            Text("Location: ${item.location}", style = MaterialTheme.typography.bodySmall)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(item.title, style = MaterialTheme.typography.titleMedium)
+                Text(
+                    item.description,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    "Location: ${item.location}",
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+
+            Text(
+                text = "Status: ${item.status}",
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.bodyMedium
+            )
         }
     }
 }

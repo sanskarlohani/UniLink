@@ -1,7 +1,9 @@
 package com.sanskar.unilink.models
 
+import java.util.UUID
+
 data class LostFoundItem(
-    val id: String = System.currentTimeMillis().toString(),
+    val id: String = UUID.randomUUID().toString(),
     val title: String = "",
     val description: String = "",
     val location: String = "",
@@ -9,4 +11,5 @@ data class LostFoundItem(
     val userId: String = "",
     val timestamp: Long = System.currentTimeMillis(),
     val status: String = "active" // or "claimed"
+
 )

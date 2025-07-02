@@ -12,6 +12,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.database.FirebaseDatabase
 import android.widget.Toast
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.sanskar.unilink.Resource
 import com.sanskar.unilink.models.LostFoundItem
 import com.sanskar.unilink.viewmodel.ViewModel
 
@@ -21,60 +22,70 @@ import com.sanskar.unilink.viewmodel.ViewModel
 fun ItemDetailsScreen(
     navController: NavController,
     itemId: String,
-    viewModel: ViewModel
+    viewModel: ViewModel,
+    type: String
 ) {
-    var item by remember { mutableStateOf<LostFoundItem?>(null) }
+
     val context = LocalContext.current
+    val itemState = viewModel.itemState.collectAsState()
 
-    LaunchedEffect(itemId) {
-        FirebaseFirestore.getInstance().collection("items")
-            .document(itemId)
-            .get()
-            .addOnSuccessListener { document ->
-                item = document.toObject(LostFoundItem::class.java)
-            }
+    LaunchedEffect(Unit) {
+        viewModel.getItem(itemId, type)
     }
 
-    Scaffold(
-        topBar = { TopAppBar(title = { Text("Item Details") }) }
-    ) { padding ->
-        item?.let {
-            Column(
-                modifier = Modifier
-                    .padding(padding)
-                    .padding(16.dp)
-                    .fillMaxSize()
-            ) {
-                Text("Title: ${it.title}", style = MaterialTheme.typography.titleLarge)
-                Text("Description: ${it.description}", modifier = Modifier.padding(top = 8.dp))
-                Text("Location: ${it.location}", modifier = Modifier.padding(top = 4.dp))
-                Text("Type: ${it.type.uppercase()}", modifier = Modifier.padding(top = 4.dp))
+    when (val state = itemState.value) {
+        is Resource.Success -> {
 
-                Spacer(modifier = Modifier.height(16.dp))
+       val item = state.data as LostFoundItem
 
-                Button(
-                    onClick = {
-                        FirebaseFirestore.getInstance().collection("items")
-                            .document(it.id)
-                            .update("status", "claimed")
-                        FirebaseDatabase.getInstance().reference
-                            .child("liveItems").child(it.id)
-                            .child("status").setValue("claimed")
-                        Toast.makeText(context, "Item claimed!", Toast.LENGTH_SHORT).show()
-                        navController.popBackStack()
-                    },
-                    modifier = Modifier.align(Alignment.End)
-                ) {
-                    Text("Claim")
+
+            Scaffold(
+                topBar = { TopAppBar(title = { Text("Item Details") }) }
+            ) { padding ->
+
+                    Column(
+                        modifier = Modifier
+                            .padding(padding)
+                            .padding(16.dp)
+                            .fillMaxSize()
+                    ) {
+                        Text("Title: ${item.title}", style = MaterialTheme.typography.titleLarge)
+                        Text("Description: ${item.description}", modifier = Modifier.padding(top = 8.dp))
+                        Text("Location: ${item.location}", modifier = Modifier.padding(top = 4.dp))
+                        Text("Type: ${item.type.uppercase()}", modifier = Modifier.padding(top = 4.dp))
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Button(
+                            onClick = {
+                                if ( type == "lost") {
+                                    viewModel.UpdateLostItems(itemId, item)
+                                } else {
+                                    viewModel.UpdateFoundItems(itemId, item.copy(type = "deactivate"))
+                                }
+                                navController.navigateUp()
+                            },
+                            modifier = Modifier.align(Alignment.End)
+                        ) {
+                            Text("deactivate")
+                        }
+                    }
                 }
-            }
-        } ?: Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator()
         }
+        is Resource.Loading -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+        is Resource.Error -> {
+            Toast.makeText(context, state.exception.message, Toast.LENGTH_SHORT).show()
+        }
+        else -> {}
     }
+
+
+
 }

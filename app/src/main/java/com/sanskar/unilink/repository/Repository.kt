@@ -115,4 +115,58 @@ class Repository {
             Resource.Error(e)
         }
     }
+
+    suspend fun getItem(id: String, type: String): Resource<LostFoundItem> {
+        return try {
+            val collectionName = when (type.lowercase()) {
+                "lost" -> "LostItems"
+                "found" -> "FoundItems"
+                else -> return Resource.Error(Exception("Invalid item type: $type"))
+            }
+
+            val doc = firestore.collection(collectionName).document(id).get().await()
+            val item = doc.toObject(LostFoundItem::class.java)
+            if (item != null) {
+                Resource.Success(item)
+            } else {
+                Resource.Error(Exception("Item not found"))
+            }
+        } catch (e: Exception) {
+            Resource.Error(e)
+        }
+    }
+
+
+
+    suspend fun UpdateLostItems(id: String, lostFoundItem: LostFoundItem) {
+        try {
+            val itemRef = firestore.collection("LostItems").document(id)
+            val item = itemRef.get().await().toObject(LostFoundItem::class.java)
+            if (item != null) {
+                itemRef.set(lostFoundItem).await()
+                realtimeDb.child("LostLiveItems").child(id).setValue(
+                    mapOf("title" to lostFoundItem.title, "type" to lostFoundItem.type, "status" to lostFoundItem.status)
+                ).await()
+            }
+            } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+    }
+
+    suspend fun UpdateFoundItems(id: String, lostFoundItem: LostFoundItem) {
+        try {
+            val itemRef = firestore.collection("FoundItems").document(id)
+            val item = itemRef.get().await().toObject(LostFoundItem::class.java)
+            if (item != null) {
+                itemRef.set(lostFoundItem).await()
+                realtimeDb.child("FoundLiveItems").child(id).setValue(
+                    mapOf("title" to lostFoundItem.title, "type" to lostFoundItem.type, "status" to lostFoundItem.status)
+                ).await()
+            }
+            } catch (e: Exception) {
+            e.printStackTrace()
+
+        }
+    }
 }

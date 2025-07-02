@@ -3,6 +3,7 @@ package com.sanskar.unilink.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sanskar.unilink.Resource
+import com.sanskar.unilink.SharedPrefManager
 import com.sanskar.unilink.models.LostFoundItem
 import com.sanskar.unilink.models.User
 import com.sanskar.unilink.repository.Repository
@@ -37,6 +38,10 @@ class ViewModel : ViewModel() {
 
     private val _userProfileState = MutableStateFlow<Resource<User>>(Resource.Idle)
     val userProfileState: StateFlow<Resource<User>> = _userProfileState
+
+    private val _itemState = MutableStateFlow<Resource<LostFoundItem>>(Resource.Idle)
+    val itemState: StateFlow<Resource<LostFoundItem>> = _itemState
+
 
     fun login(email: String, password: String) {
         viewModelScope.launch {
@@ -112,4 +117,24 @@ class ViewModel : ViewModel() {
         _foundItemState.value = Resource.Idle
     }
 
-}
+    fun UpdateLostItems(id: String, lostFoundItem: LostFoundItem) {
+        viewModelScope.launch {
+            repository.UpdateLostItems(id, lostFoundItem)
+        }
+    }
+
+    fun UpdateFoundItems(id: String, lostFoundItem: LostFoundItem) {
+        viewModelScope.launch {
+            repository.UpdateFoundItems(id, lostFoundItem)
+        }
+    }
+
+    fun getItem(id: String, type: String): Resource<LostFoundItem> {
+        viewModelScope.launch {
+
+            _lostListState.value = Resource.Loading
+            _itemState.value = repository.getItem(id, type)
+            }
+        return _itemState.value
+        }
+    }

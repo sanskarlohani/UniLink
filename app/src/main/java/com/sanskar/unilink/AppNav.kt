@@ -5,6 +5,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.android.play.core.integrity.v
 import com.sanskar.unilink.screens.HomeScreen
 import com.sanskar.unilink.screens.ItemDetailsScreen
 import com.sanskar.unilink.screens.LoginScreen
@@ -24,13 +25,14 @@ fun AppNav() {
         composable(Routes.HOME) { HomeScreen(navController, viewModel) }
         composable(Routes.REPORT) { ReportItemScreen(navController,viewModel) }
         composable(Routes.PROFILE) { ProfileScreen(navController) }
-        composable("${Routes.ITEM_DETAILS}/{itemId}") { backStackEntry ->
+        composable("${Routes.ITEM_DETAILS}/{itemId}/{type}") { backStackEntry ->
             val itemId = backStackEntry.arguments?.getString("itemId")
-            itemId?.let { ItemDetailsScreen(
-                navController, it,
-                viewModel = TODO()
-            ) }
+            val type = backStackEntry.arguments?.getString("type")
+            itemId?.let {
+                ItemDetailsScreen(navController, it, viewModel = viewModel, type = type ?: "")
+            }
         }
+
         composable(Routes.LOST){
             LoginScreen(navController, viewModel)
         }

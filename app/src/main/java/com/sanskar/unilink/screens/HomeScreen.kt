@@ -29,7 +29,7 @@ fun HomeScreen(navController: NavController, viewModel1: ViewModel) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Campus Lost & Found") }
+                title = { Text("UniLink") }
             )
         },
         bottomBar = {
@@ -50,8 +50,8 @@ fun HomeScreen(navController: NavController, viewModel1: ViewModel) {
             Spacer(modifier = Modifier.height(12.dp))
 
             when (selectedTab) {
-                0 -> LostScreen(navController = navController, viewModel = viewModel)
-                1 -> FoundScreen(navController = navController, viewModel = viewModel)
+                1 -> LostScreen(navController = navController, viewModel = viewModel)
+                0 -> FoundScreen(navController = navController, viewModel = viewModel)
             }
         }
     }

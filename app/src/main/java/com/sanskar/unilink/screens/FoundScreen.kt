@@ -13,7 +13,7 @@ import androidx.navigation.NavController
 import com.sanskar.unilink.Resource
 import com.sanskar.unilink.Routes
 import com.sanskar.unilink.models.LostFoundItem
-import com.sanskar.unilink.screens.ItemCard
+import com.sanskar.unilink.models.User
 import com.sanskar.unilink.viewmodel.ViewModel
 
 @Composable
@@ -22,9 +22,11 @@ fun FoundScreen(
     viewModel: ViewModel
 ) {
     val foundListState by viewModel.foundListState.collectAsState()
+    val userState by viewModel.userProfileState.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.getFoundItems()
+        viewModel.getUserProfile()
     }
 
     Scaffold(
@@ -41,10 +43,20 @@ fun FoundScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
+            // Optional: show user error if exists
+            if (userState is Resource.Error) {
+                Text(
+                    text = "User error: ${(userState as Resource.Error).exception.message}",
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
+
             when (foundListState) {
                 is Resource.Idle -> {
-
+                    // Optional: show nothing or shimmer
                 }
+
                 is Resource.Loading -> {
                     CircularProgressIndicator(modifier = Modifier.padding(16.dp))
                 }
@@ -59,6 +71,8 @@ fun FoundScreen(
 
                 is Resource.Success -> {
                     val itemsList = (foundListState as Resource.Success<List<LostFoundItem>>).data
+                    val userEmail = (userState as? Resource.Success<User>)?.data?.email ?: ""
+
                     if (itemsList.isEmpty()) {
                         Text("No found items yet.", modifier = Modifier.padding(16.dp))
                     } else {
@@ -66,7 +80,10 @@ fun FoundScreen(
                             items(itemsList) { item ->
                                 ItemCard(
                                     item = item,
-                                    onClick = { /* Handle click */ }
+                                    userEmail = userEmail,
+                                    onClick = {
+                                        navController.navigate("${Routes.ITEM_DETAILS}/${item.id}/found")
+                                    }
                                 )
                             }
                         }

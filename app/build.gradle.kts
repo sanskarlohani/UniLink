@@ -68,16 +68,11 @@ dependencies {
     //ViewModel + Lifecycle
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.1")
-    // Firebase BOM
-    //implementationplatform("com.google.firebase:firebase-bom:33.16.0")
-    // Firebase Auth
-    //implementation("com.google.firebase:firebase-auth-ktx")
-    // Firestore
-    //implementation("com.google.firebase:firebase-firestore-ktx")
-    // Realtime Database
-    //implementation("com.google.firebase:firebase-database-ktx")
     //Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
     //image Coil
     implementation("io.coil-kt:coil-compose:2.7.0")
+    //gson
+    implementation("com.google.code.gson:gson:2.11.0")
+
 }
