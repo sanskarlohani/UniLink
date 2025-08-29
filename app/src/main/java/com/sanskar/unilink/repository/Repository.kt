@@ -169,4 +169,24 @@ class Repository {
 
         }
     }
+
+    // Add method to check if user is currently authenticated
+    fun isUserAuthenticated(): Boolean {
+        return auth.currentUser != null
+    }
+
+    // Add method to get current user email
+    fun getCurrentUserEmail(): String? {
+        return auth.currentUser?.email
+    }
+
+    // Add method to check authentication state
+    suspend fun checkAuthenticationState(): Resource<Boolean> {
+        return try {
+            val isAuthenticated = auth.currentUser != null
+            Resource.Success(isAuthenticated)
+        } catch (e: Exception) {
+            Resource.Error(e)
+        }
+    }
 }

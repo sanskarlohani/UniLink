@@ -1,4 +1,4 @@
-package com.sanskar.unilink
+package com.sanskar.unilink.navigation
 
 object Routes {
     const val LOGIN = "login"
@@ -9,4 +9,5 @@ object Routes {
     const val PROFILE = "profile"
     const val LOST = "lost"
     const val FOUND = "found"
+    const val SPLASH = "splash"
 }

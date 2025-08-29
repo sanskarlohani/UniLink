@@ -7,21 +7,20 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.sanskar.unilink.Resource
-import com.sanskar.unilink.Routes
+import com.sanskar.unilink.components.ItemCard
+import com.sanskar.unilink.navigation.Routes
 import com.sanskar.unilink.models.LostFoundItem
 import com.sanskar.unilink.models.User
 import com.sanskar.unilink.viewmodel.ViewModel
@@ -33,11 +32,6 @@ fun LostScreen(
 ) {
     val lostListState by viewModel.lostListState.collectAsState()
     val userState by viewModel.userProfileState.collectAsState()
-
-    LaunchedEffect(Unit) {
-        viewModel.getLostItems()
-        viewModel.getUserProfile()
-    }
 
     Scaffold(
         floatingActionButton = {
@@ -65,11 +59,11 @@ fun LostScreen(
 
             when (lostListState) {
                 is Resource.Idle -> {
-                    // Optional: initial idle placeholder
+                    // Shimmer is handled in HomeScreen, show nothing here
                 }
 
                 is Resource.Loading -> {
-                    CircularProgressIndicator(modifier = Modifier.padding(16.dp))
+                    // Remove CircularProgressIndicator - shimmer handles this in HomeScreen
                 }
 
                 is Resource.Error -> {

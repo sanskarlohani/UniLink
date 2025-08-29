@@ -1,4 +1,4 @@
-package com.sanskar.unilink.screens
+package com.sanskar.unilink.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -29,7 +29,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.sanskar.unilink.Routes
+import com.sanskar.unilink.navigation.Routes
 import com.sanskar.unilink.models.LostFoundItem
 
 @Composable

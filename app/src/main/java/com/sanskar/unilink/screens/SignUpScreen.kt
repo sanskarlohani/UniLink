@@ -30,7 +30,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.sanskar.unilink.Resource
-import com.sanskar.unilink.Routes
+import com.sanskar.unilink.components.CustomOutlinedTextField
+import com.sanskar.unilink.navigation.Routes
 import com.sanskar.unilink.models.User
 import com.sanskar.unilink.viewmodel.ViewModel
 
@@ -74,13 +75,13 @@ fun SignUpScreen(navigator: NavController, authViewModel: ViewModel){
                 .imePadding(),
             verticalArrangement = Arrangement.Center
         ) {
-            CustomOutlinedTextField(text = name, label = "Name" ,onValueChange = { name = it })
-            CustomOutlinedTextField(text = email,"email", onValueChange = { email = it })
-            CustomOutlinedTextField(text = sic, "sic",onValueChange = { sic = it })
-            CustomOutlinedTextField(text = year, "year",onValueChange = { year = it })
-            CustomOutlinedTextField(text = semester,"semester", onValueChange = { semester = it })
-            CustomOutlinedTextField(text = college, "college",onValueChange = { college = it })
-            CustomOutlinedTextField(text = password, "password",onValueChange = { password = it })
+            CustomOutlinedTextField(text = name, label = "Name", onValueChange = { name = it })
+            CustomOutlinedTextField(text = email, "email", onValueChange = { email = it })
+            CustomOutlinedTextField(text = sic, "sic", onValueChange = { sic = it })
+            CustomOutlinedTextField(text = year, "year", onValueChange = { year = it })
+            CustomOutlinedTextField(text = semester, "semester", onValueChange = { semester = it })
+            CustomOutlinedTextField(text = college, "college", onValueChange = { college = it })
+            CustomOutlinedTextField(text = password, "password", onValueChange = { password = it })
 
             Spacer(modifier = Modifier.height(16.dp))
 

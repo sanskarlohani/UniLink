@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.sanskar.unilink.Resource
-import com.sanskar.unilink.Routes
+import com.sanskar.unilink.navigation.Routes
 import com.sanskar.unilink.viewmodel.ViewModel
 
 

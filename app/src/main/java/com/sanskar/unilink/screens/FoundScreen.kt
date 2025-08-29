@@ -11,7 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.sanskar.unilink.Resource
-import com.sanskar.unilink.Routes
+import com.sanskar.unilink.components.ItemCard
+import com.sanskar.unilink.navigation.Routes
 import com.sanskar.unilink.models.LostFoundItem
 import com.sanskar.unilink.models.User
 import com.sanskar.unilink.viewmodel.ViewModel
@@ -23,11 +24,6 @@ fun FoundScreen(
 ) {
     val foundListState by viewModel.foundListState.collectAsState()
     val userState by viewModel.userProfileState.collectAsState()
-
-    LaunchedEffect(Unit) {
-        viewModel.getFoundItems()
-        viewModel.getUserProfile()
-    }
 
     Scaffold(
         floatingActionButton = {
@@ -54,11 +50,11 @@ fun FoundScreen(
 
             when (foundListState) {
                 is Resource.Idle -> {
-                    // Optional: show nothing or shimmer
+                    // Shimmer is handled in HomeScreen, show nothing here
                 }
 
                 is Resource.Loading -> {
-                    CircularProgressIndicator(modifier = Modifier.padding(16.dp))
+                    // Remove CircularProgressIndicator - shimmer handles this in HomeScreen
                 }
 
                 is Resource.Error -> {
